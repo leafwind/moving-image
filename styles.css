@@ -15,9 +15,8 @@ body, html {
     background: transparent;
 }
 
-#moving-image {
-    position: absolute;
-    width: 100px; /* Set your desired width */
+.moving-image {
+    position: absolute;  /* Ensure the images can be positioned independently */
+    width: 100px;        /* Set your desired width */
     height: auto;
 }
-
