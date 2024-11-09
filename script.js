@@ -1,24 +1,30 @@
 // script.js
 
-// Get all images with the class "moving-image"
-const images = document.querySelectorAll('.moving-image');
+const images = document.querySelectorAll('.moving-image'); // Select all existing images
+const imageData = Array.from(images).map((image) => {
+    // Assign a random size between 50px and 150px
+    const randomSize = Math.floor(Math.random() * 100) + 50;
+    image.style.width = `${randomSize}px`;
+    image.style.height = 'auto'; // Keep aspect ratio
 
-// Array to store position, velocity, and angle for each image
-const imageData = Array.from(images).map(() => ({
-    posX: Math.random() * window.innerWidth,  // Random starting X position
-    posY: Math.random() * window.innerHeight, // Random starting Y position
-    velX: (Math.random() - 0.5) * 5,          // Random X velocity
-    velY: (Math.random() - 0.5) * 5,          // Random Y velocity
-    angle: 0,                                 // Initial rotation angle
-    rotationSpeed: (Math.random() - 0.5) * 10 // Random rotation speed
-}));
+    return {
+        posX: Math.random() * window.innerWidth,
+        posY: Math.random() * window.innerHeight,
+        velX: (Math.random() - 0.5) * 5,
+        velY: (Math.random() - 0.5) * 5,
+        angle: 0,
+        rotationSpeed: (Math.random() - 0.5) * 10
+    };
+});
 
 const friction = 0.9; // Friction to simulate energy loss on collision
+const repelDistance = 100; // Distance within which images are repelled from click
+const repelStrength = 5;   // Strength of the repelling force
 
 // Function to animate each image
 function animate() {
     images.forEach((image, index) => {
-        // Destructure current image data
+        // Get current image data
         let { posX, posY, velX, velY, angle, rotationSpeed } = imageData[index];
 
         // Update position
@@ -34,12 +40,12 @@ function animate() {
 
         // Collision detection and response
         if (posX <= 0 || posX + image.width >= containerWidth) {
-            velX = -velX * friction; // Reverse X direction and apply friction
-            posX = posX <= 0 ? 0 : containerWidth - image.width; // Adjust position if it goes out of bounds
+            velX = -velX * friction;
+            posX = posX <= 0 ? 0 : containerWidth - image.width;
         }
         if (posY <= 0 || posY + image.height >= containerHeight) {
-            velY = -velY * friction; // Reverse Y direction and apply friction
-            posY = posY <= 0 ? 0 : containerHeight - image.height; // Adjust position if it goes out of bounds
+            velY = -velY * friction;
+            posY = posY <= 0 ? 0 : containerHeight - image.height;
         }
 
         // Apply position and rotation to the image
@@ -54,6 +60,28 @@ function animate() {
     // Continue the animation
     requestAnimationFrame(animate);
 }
+
+// Add a click event listener to repel nearby images
+document.addEventListener('click', (event) => {
+    const clickX = event.clientX;
+    const clickY = event.clientY;
+
+    images.forEach((image, index) => {
+        const { posX, posY } = imageData[index];
+        const dx = posX - clickX;
+        const dy = posY - clickY;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+
+        if (distance < repelDistance) {
+            // Calculate repelling force proportional to the distance
+            const force = repelStrength / distance;
+
+            // Update velocities based on repelling force
+            imageData[index].velX += force * dx;
+            imageData[index].velY += force * dy;
+        }
+    });
+});
 
 // Start the animation
 animate();
