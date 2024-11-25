@@ -13,6 +13,7 @@
         // 解析 URL 參數
         const urlParams = new URLSearchParams(window.location.search);
         const imageCount = parseInt(urlParams.get('count')) || 5; // 預設為 5 張圖片
+        const speed = parseFloat(urlParams.get('speed')) || 1; // 預設速度為 1
 
         // 動態生成圖片
         const container = document.getElementById('container');
@@ -22,6 +23,9 @@
             img.src = 'https://cdn.jsdelivr.net/gh/leafwind/images/daifuku_mao.png'; // 替換為實際的圖片路徑
             container.appendChild(img);
         }
+
+        // 將速度參數傳遞給 script.js
+        window.speedMultiplier = speed;
     </script>
     
     </div>

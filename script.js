@@ -1,6 +1,8 @@
 // script.js
 
 const images = document.querySelectorAll('.moving-image'); // Select all existing images
+const speedMultiplier = window.speedMultiplier || 1;
+
 const imageData = Array.from(images).map((image) => {
     // Assign a random size between 50px and 150px
     const randomSize = Math.floor(Math.random() * 100) + 50;
@@ -10,16 +12,17 @@ const imageData = Array.from(images).map((image) => {
     return {
         posX: Math.random() * window.innerWidth,
         posY: Math.random() * window.innerHeight,
-        velX: (Math.random() - 0.5) * 5,
-        velY: (Math.random() - 0.5) * 5,
+        velX: (Math.random() - 0.5) * 5 * speedMultiplier,
+        velY: (Math.random() - 0.5) * 5 * speedMultiplier,
         angle: 0,
-        rotationSpeed: (Math.random() - 0.5) * 10
+        rotationSpeed: (Math.random() - 0.5) * 10 * speedMultiplier
     };
 });
 
 const friction = 0.9; // Friction to simulate energy loss on collision
 const repelDistance = 100; // Distance within which images are repelled from click
-const repelStrength = 5;   // Strength of the repelling force
+// 排斥速度
+const repelStrength = 5 * speedMultiplier;   // Strength of the repelling force
 
 // Function to animate each image
 function animate() {
@@ -77,8 +80,8 @@ document.addEventListener('click', (event) => {
             const force = repelStrength / distance;
 
             // Update velocities based on repelling force
-            imageData[index].velX += force * dx;
-            imageData[index].velY += force * dy;
+            imageData[index].velX += force * dx * speedMultiplier;
+            imageData[index].velY += force * dy * speedMultiplier;
         }
     });
 });
