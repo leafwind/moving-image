@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Embedded Page</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+        #controls {
+            padding: 10px;
+        }
+        #urlDisplay {
+            padding: 10px;
+            background-color: #f0f0f0;
+            word-break: break-all;
+        }
+        #urlDisplay a {
+            color: #0066cc;
+            text-decoration: none;
+        }
+        #urlDisplay a:hover {
+            text-decoration: underline;
+        }
+        iframe {
+            flex: 1;
+            width: 100%;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="controls">
+        <label for="count">Count:</label>
+        <input type="number" id="count" value="5">
+        <label for="speed">Speed:</label>
+        <input type="number" id="speed" value="1">
+    </div>
+    <div id="urlDisplay"></div>
+    <iframe id="embeddedPage" src="https://moving-image-3hbw96z7n-leafwinds-projects.vercel.app/?count=5&speed=1"></iframe>
+
+    <script>
+        function updateEmbeddedPage() {
+            const count = document.getElementById('count').value;
+            const speed = document.getElementById('speed').value;
+            const url = `https://moving-image-3hbw96z7n-leafwinds-projects.vercel.app/?count=${count}&speed=${speed}`;
+            document.getElementById('embeddedPage').src = url;
+            document.getElementById('urlDisplay').innerHTML = `Embedded URL: <a href="${url}" target="_blank">${url}</a>`;
+        }
+
+        document.getElementById('count').addEventListener('input', updateEmbeddedPage);
+        document.getElementById('speed').addEventListener('input', updateEmbeddedPage);
+        
+        // Initial call to set the URL display
+        updateEmbeddedPage();
+    </script>
+</body>
+</html>
