@@ -43,13 +43,14 @@
         <input type="number" id="speed" value="1">
     </div>
     <div id="urlDisplay"></div>
-    <iframe id="embeddedPage" src="https://moving-image-3hbw96z7n-leafwinds-projects.vercel.app/?count=5&speed=1"></iframe>
+    <iframe id="embeddedPage"></iframe>
 
     <script>
+        const currentDomain = window.location.hostname;
         function updateEmbeddedPage() {
             const count = document.getElementById('count').value;
             const speed = document.getElementById('speed').value;
-            const url = `https://moving-image-3hbw96z7n-leafwinds-projects.vercel.app/?count=${count}&speed=${speed}`;
+            const url = `https://${currentDomain}/index.html?count=${count}&speed=${speed}`;
             document.getElementById('embeddedPage').src = url;
             document.getElementById('urlDisplay').innerHTML = `Embedded URL: <a href="${url}" target="_blank">${url}</a>`;
         }
